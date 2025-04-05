@@ -1,0 +1,50 @@
+become: true
+hosts: all
+name: Convert Bash Script to Ansible Playbook
+tasks:
+- name: Install packages libprotobuf-dev libleveldb-dev libsnappy-dev libopencv-dev
+    libhdf5-serial-dev protobuf-compiler
+  yum:
+    name:
+    - libprotobuf-dev
+    - libleveldb-dev
+    - libsnappy-dev
+    - libopencv-dev
+    - libhdf5-serial-dev
+    - protobuf-compiler
+    state: present
+- name: Install packages --no-install-recommends libboost-all-dev
+  yum:
+    name:
+    - --no-install-recommends
+    - libboost-all-dev
+    state: present
+- name: Install packages libgflags-dev libgoogle-glog-dev liblmdb-dev
+  yum:
+    name:
+    - libgflags-dev
+    - libgoogle-glog-dev
+    - liblmdb-dev
+    state: present
+- git:
+    dest: /home/user/repo
+    repo: https://github.com/BVLC/caffe.git
+  name: Clone repository https://github.com/BVLC/caffe.git
+- name: 'Run raw command: cd caffe'
+  shell: cd caffe
+- copy:
+    dest: Makefile.config
+    src: Makefile.config.example
+  name: Copy Makefile.config.example to Makefile.config
+- args:
+    chdir: /home/user/repo
+  command: make all
+  name: 'Run make command: make all'
+- args:
+    chdir: /home/user/repo
+  command: make test
+  name: 'Run make command: make test'
+- args:
+    chdir: /home/user/repo
+  command: make runtest
+  name: 'Run make command: make runtest'
