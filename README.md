@@ -1,10 +1,8 @@
-# Python
-This directory contains the following python scripts:
+# Bash2Ansible
+This Python 3.9 script converts a bash shell script to an Ansible playbook. 
 
-Bash2Ansible.py  Converts bash script to Ansible playbook
+It was tested on RHEL 8.10 and includes support for Satellite hammer commands.
 
-OCP4.18AWS.py  Deploy OpenShift 4.18 on AWS.
+To run, paste this into a terminal:
 
-OCP4.18baremetal.py  Deploy OpenShift 4.18 on baremetal
-
-OCP4.18vmWare.py  Deploy OpenShift 4.18 on VMware/vSphere
+/usr/bin/python bash2ansible.py input_script.sh output_playbook.yml
