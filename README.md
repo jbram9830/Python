@@ -1,4 +1,4 @@
-Deployment and Python scripts
+**Deployment and Python scripts**
 
 AAP2.5              Ansible Automation Platform (AAP) 2.5 with load balancer (haproxy)
 
