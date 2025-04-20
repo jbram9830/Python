@@ -1,1 +1,125 @@
-AWS Deploy OCP 4.18 on AWS
+To deploy **OpenShift 4.18 on AWS**, you can use the **Installer-Provisioned Infrastructure (IPI)** method, which automates most of the deployment process. Here's a **step-by-step guide**:
+
+---
+
+## 🔧 Prerequisites
+
+### 1. **AWS Setup**
+- AWS account with necessary IAM permissions.
+- A user with programmatic access (access key ID and secret access key).
+- An existing domain or subdomain (e.g., `openshift.example.com`) for OpenShift’s public route DNS.
+- (Optional) A public hosted zone in Route 53 if you want OpenShift to manage DNS.
+
+### 2. **Local Machine**
+- Linux/macOS or WSL (Windows Subsystem for Linux).
+- Installed:
+  - [OpenShift Installer](https://mirror.openshift.com/pub/openshift-v4/clients/ocp/)
+  - [oc CLI](https://mirror.openshift.com/pub/openshift-v4/clients/oc/)
+  - [AWS CLI](https://aws.amazon.com/cli/)
+  - `jq` and `openssh`
+
+---
+
+## 🚀 Step-by-Step Deployment
+
+### 1. **Download OpenShift Installer & CLI**
+Download the correct version (4.18) from:
+
+- [Installer & oc CLI](https://mirror.openshift.com/pub/openshift-v4/clients/ocp/4.18/)
+
+Unpack and move them to a directory in your `$PATH`, e.g.:
+
+```bash
+chmod +x openshift-install oc
+sudo mv openshift-install oc /usr/local/bin/
+```
+
+### 2. **Configure AWS CLI**
+```bash
+aws configure
+# Enter your access key, secret key, region (e.g., us-east-1), and output format
+```
+
+### 3. **Create an Install Config**
+```bash
+openshift-install create install-config --dir=mycluster
+```
+
+You'll be prompted to input:
+- Platform: AWS
+- Region
+- Base domain (e.g., `example.com`)
+- Cluster name (e.g., `openshift`)
+- Pull secret (from [Red Hat cloud console](https://console.redhat.com/openshift/install/pull-secret))
+- SSH key (used to access nodes)
+
+This generates a file at `mycluster/install-config.yaml`.
+
+---
+
+### 4. **(Optional) Edit `install-config.yaml`**
+
+You can customize:
+- Machine types
+- Replica counts
+- Networking
+
+Once satisfied, you can proceed.
+
+**Important:** Backup this file as it gets deleted after the next step.
+
+---
+
+### 5. **Create the Cluster**
+```bash
+openshift-install create cluster --dir=mycluster --log-level=info
+```
+
+This will:
+- Create infrastructure on AWS
+- Launch EC2 instances
+- Set up networking, load balancers, and DNS (if Route 53 is integrated)
+- Deploy OpenShift components
+
+This process takes **30–45 minutes**.
+
+---
+
+### 6. **Access the Cluster**
+After completion, the installer will display:
+- Console URL
+- Admin credentials
+
+Example:
+```
+INFO Install complete!
+INFO To access the cluster as the system:admin user...
+```
+
+Login with `oc`:
+```bash
+export KUBECONFIG=mycluster/auth/kubeconfig
+oc whoami
+```
+
+---
+
+### 7. **Post-Install Tasks**
+- Create users and configure identity providers
+- Set up cluster monitoring and logging
+- Configure persistent storage if needed
+
+---
+
+## 📌 Notes
+
+- **Destroy Cluster** (Cleans up all resources):
+```bash
+openshift-install destroy cluster --dir=mycluster
+```
+
+- Make sure you monitor AWS costs—OpenShift clusters can generate significant usage.
+
+---
+
+Would you like a pre-filled `install-config.yaml` example or a script to automate this process?
