@@ -122,6 +122,3 @@ openshift-install destroy cluster --dir=mycluster
 
 - Make sure you monitor AWS costs—OpenShift clusters can generate significant usage.
 
----
-
-Would you like a pre-filled `install-config.yaml` example or a script to automate this process?
