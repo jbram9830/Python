@@ -8,11 +8,7 @@ Deploying **Red Hat Ansible Automation Platform (AAP) 2.5** in a **load-balanced
 - **Load balancer** (e.g., HAProxy)
 - Shared storage (e.g., NFS) is recommended for HA scenarios
 
-I'll guide you with an **Ansible playbook** that sets up a **multi-node AAP 2.5 cluster behind a load balancer**. This assumes you have the **AAP installer bundle** and a valid **subscription**.
-
----
-
-## 🔧 Prerequisites
+##  Prerequisites
 
 1. RHEL 9 machines:
    - `controller1`, `controller2`, etc.
@@ -24,7 +20,7 @@ I'll guide you with an **Ansible playbook** that sets up a **multi-node AAP 2.5 
 
 ---
 
-## 📁 Directory Structure
+##  Directory Structure
 
 ```bash
 aap-install/
@@ -41,7 +37,7 @@ aap-install/
 
 ---
 
-## 📜 inventory/hosts (AAP Installer Inventory)
+##  inventory/hosts (AAP Installer Inventory)
 
 ```ini
 [automationcontroller]
@@ -63,7 +59,7 @@ loadbalancer_hostname='aap.example.com'
 
 ---
 
-## 📜 install.yml (Main Playbook)
+##  install.yml (Main Playbook)
 
 ```yaml
 - name: Setup AAP 2.5 HA Cluster
@@ -137,7 +133,7 @@ backend aap_backend
 
 ---
 
-## 🚀 Deployment Steps
+##  Deployment Steps
 
 1. Prepare RHEL 9 VMs and networking
 2. Configure external PostgreSQL if used
@@ -151,12 +147,8 @@ ansible-playbook install.yml -i inventory/hosts
 
 ---
 
-## ✅ Validation
+##  Validation
 
 - Access AAP via: `http://aap.example.com`
 - Login with the admin credentials set in inventory
 - Check cluster health in the Controller UI
-
----
-
-Want me to generate the full ready-to-run directory with templates and files?
