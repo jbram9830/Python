@@ -1,7 +1,5 @@
 Deploy OCP 4.18 on AWS
 
-To deploy **OpenShift 4.18 on AWS**, you can use the **Installer-Provisioned Infrastructure (IPI)** method, which automates most of the deployment process. Here's a **step-by-step guide**:
-
 ---
 
 ## 🔧 Prerequisites
