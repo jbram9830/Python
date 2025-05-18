@@ -1,1 +1,49 @@
-Azure Deploy OCP 4.18 on Azure
+Prerequisites:
+
+1. Azure Account
+2. OpenShift Installer
+3. Red Hat Account (For OpenShift pull secret (download from cloud.redhat.com)
+4. Azure CLI (Installed and logged in: az login)
+
+Step-by-Step Deployment
+1. Set Environment Variables
+export AZURE_REGION=eastus
+export CLUSTER_NAME=my-ocp-cluster
+export BASE_DOMAIN=example.com
+
+2. Prepare Azure Resources
+Make sure your Azure DNS zone for $BASE_DOMAIN is already created and accessible.
+
+3. Create Install Configuration
+Run: 
+openshift-install create install-config --dir=ocp-install
+
+You'll be prompted for:
+Platform -> Azure
+Region
+Base domain
+Cluster name
+Pull secret
+SSH Public Key
+Alternatively, manually edit ocp-install/install-config.yaml before continuing.
+
+4. Install the Cluster:
+openshift-install create cluster --dir=ocp-install --log-level=info
+
+This will:
+Create Azure infrastructure (VNETs, subnets, VMs, etc.)
+Deploy OpenShift control plane and worker nodes
+Set up ingress and API load balancers
+Configure DNS (if permissions allow)
+
+5. Wait for Completion
+Installer will output:
+INFO Waiting up to 30m0s for the Kubernetes API...
+...
+INFO Install complete!
+
+6. Access the Cluster
+Console URL and kubeconfig will be in ocp-install/auth
+Log in using:
+export KUBECONFIG=ocp-install/auth/kubeconfig
+oc whoami
