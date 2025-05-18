@@ -111,7 +111,7 @@ oc whoami
 
 ---
 
-## 📌 Notes
+##  Notes
 
 - **Destroy Cluster** (Cleans up all resources):
 ```bash
